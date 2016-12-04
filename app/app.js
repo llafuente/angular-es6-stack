@@ -13,6 +13,7 @@ import 'services/services';
 import 'directives/directives';
 import stateBusy from 'directives/seed/stateBusy';
 import httpBusy from 'directives/seed/httpBusy';
+import selectValue from 'directives/seed/selectValue';
 import uiRouterRedirect from 'directives/seed/uiRouterRedirect';
 //import 'services/version-service';
 
@@ -20,9 +21,11 @@ import mainRoutes from 'components/main/main.routes.config';
 
 // Seed
 import BusyController from 'src/test/busy/busy.controller.js';
-import testBusyRoutes from 'src/test/busy/busy.routes.config';
+import BusyRoutes from 'src/test/busy/busy.routes.config';
 import RedirectController from 'src/test/redirect/redirect.controller.js';
-import testRedirectRoutes from 'src/test/redirect/redirect.routes.config';
+import RedirectRoutes from 'src/test/redirect/redirect.routes.config';
+import SelectValueController from 'src/test/selectValue/selectValue.controller.js';
+import SelectValueRoutes from 'src/test/selectValue/routes.config';
 
 angular.module('app', [
   'ngResource',
@@ -34,13 +37,23 @@ angular.module('app', [
   httpBusy,
   uiRouterRedirect,
 
-  /*, 'version'*/])
+  /*, 'version'*/]);
 
+selectValue(angular.module('app'));
+
+angular.module('app')
 .config(mainRoutes)
 
 // Seed
-.config(testBusyRoutes)
-.config(testRedirectRoutes)
+.config(BusyRoutes)
+.config(RedirectRoutes)
+.config(SelectValueRoutes)
 .controller('BusyController', BusyController)
 .controller('RedirectController', RedirectController)
+.controller('SelectValueController', SelectValueController)
+.selectValue('seedTestValue', [
+  {id: 0, label: 'option 0'},
+  {id: 1, label: 'option 1'},
+  {id: 2, label: 'option 2'},
+], 'getSeedTestValue', 'Cualquiera')
 ;
