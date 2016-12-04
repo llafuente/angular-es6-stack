@@ -95,7 +95,18 @@ module.exports = {
   devtool: "inline-source-map",
   plugins: [
     new ExtractTextPlugin("styles.css")
-  ]
+  ],
+
+  // enable API proxy
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9090',
+        secure: false
+      }
+    }
+  }
+
   /*
   plugins: [
     new webpack.HtmlWebpackPlugin({

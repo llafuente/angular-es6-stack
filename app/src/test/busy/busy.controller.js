@@ -6,7 +6,7 @@ export default class BusyController {
   getRequest () {
     this.$http({
       method: 'GET',
-      url: '/something'
+      url: '/api/seed/busy-delay'
     });
   }
 }

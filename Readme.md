@@ -15,6 +15,7 @@ Done
 * karma test (ci/dev)
 * karma coverage using: babel-plugin-istanbul
 * source-map working (at least on chrome)
+* API proxy
 
 
 TODO
