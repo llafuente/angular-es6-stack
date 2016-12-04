@@ -13,9 +13,10 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    //root: path.resolve('app/'),
-    modules: ['node_modules', 'app'],
-    //extensions: ['', '.js', '.scss'] 
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, 'app')
+    ]
   },
   module: {
     rules: [
@@ -41,6 +42,10 @@ module.exports = {
               query: {
                 root: path.resolve(__dirname, 'app'),
                 sourceMap: !isProduction,
+                includePaths: [
+                  path.resolve(__dirname, 'app'),
+                  path.resolve(__dirname, 'node_modules')
+                ]
               }
             },
             {

@@ -14,6 +14,7 @@ Done
 * bootstrap v4
 * karma test (ci/dev)
 * karma coverage using: babel-plugin-istanbul
+* source-map working (at least on chrome)
 
 
 TODO
@@ -23,7 +24,6 @@ TODO
 * JSON API
 * inetsys-seed
 * protractor
-* source-map in browser
 
 
 asset inline

@@ -1,10 +1,10 @@
 export default /*@ngInject*/ class MainController {
   constructor() {
-  	this.applicationName = 'app';
-  	
+    this.applicationName = 'app';
+    this.controller = 'MainController';
   }
 
   error() {
-  	throw new Error("what line!");
+    throw new Error("what line!");
   }
 }

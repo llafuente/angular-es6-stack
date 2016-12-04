@@ -1,5 +1,5 @@
 <header>
-    <h1>{{mainCtrl.applicationName}}</h1>
+    <h1>{{mainCtrl.applicationName}} // {{mainCtrl.controller}} </h1>
 </header>
 <section>
     <div class="image-container">
@@ -9,6 +9,9 @@
         <h3>Angular ES6 Webpack Application</h3>
         <p>With a little help from <a href="https://yeoman.io">Yeoman</a></p>
     </div>
+    
+    <hr />
+
     <button class="btn btn-primary"
     ng-click="mainCtrl.error()"
     >throw!</button>
@@ -22,4 +25,12 @@
     ng-click="mainCtrl.error()"
     ng-click-if="false"
     >do not throw!</button>
+
+    <hr />
+
+    <h1>Seed testing</h1>
+
+    <ul>
+      <li><a ui-sref="busy.busy1">State Busy test</a></li>
+    </ul>
 </section>

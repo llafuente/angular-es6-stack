@@ -4,9 +4,10 @@
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>app</title>
+      <link href="/styles.css" media="all" rel="stylesheet" />
     </head>
     <body>
-        <div ng-app="app">
+        <div ng-app="app" cg-busy="loading">
            	<div ui-view></div>
         </div>
         <script src="/webpack-dev-server.js"></script>

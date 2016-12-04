@@ -1,7 +1,9 @@
 // @import "../nodes_modules/bootstrap/scss/bootstrap.scss";
 
 @import 'bootstrap/scss/bootstrap.scss';
-@import "components/main/main.scss";
+// TODO study why?!!
+@import '../node_modules/angular-busy/dist/angular-busy.css';
+@import 'components/main/main.scss';
 
 // xs, sm, md, lg
 @include media-breakpoint-up(sm) {

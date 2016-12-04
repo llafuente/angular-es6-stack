@@ -11,10 +11,29 @@ import 'angular-sanitize';
 
 import 'services/services';
 import 'directives/directives';
+import stateBusy from 'directives/seed/stateBusy';
+import httpBusy from 'directives/seed/httpBusy';
 //import 'services/version-service';
 
 import mainRoutes from 'components/main/main.routes.config';
 
-angular.module('app', ['ngResource', 'ui.router', 'services', 'directives', 'ngSanitize'/*, 'version'*/])
+// Seed
+import BusyController from 'src/test/busy/busy.controller.js';
+import testBusyRoutes from 'src/test/busy/busy.routes.config';
 
-.config(mainRoutes);
+angular.module('app', [
+  'ngResource',
+  'ui.router',
+  'services',
+  'directives',
+  'ngSanitize',
+  stateBusy,
+  httpBusy
+
+  /*, 'version'*/])
+
+.config(mainRoutes)
+
+// Seed
+.config(testBusyRoutes)
+.controller('BusyController', BusyController);
