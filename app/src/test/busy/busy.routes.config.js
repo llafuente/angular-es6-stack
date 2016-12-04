@@ -10,9 +10,7 @@ function add_delay ($q) {
   return defer.promise;
 }
 
-export default /*@ngInject*/ function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/');
-
+export default /*@ngInject*/ function($stateProvider) {
   $stateProvider
   .state('busy', {
     url: '/busy',

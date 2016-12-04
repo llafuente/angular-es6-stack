@@ -9,10 +9,37 @@ export default 'httpBusy';
 /**
  * @ngdoc module
  * @name httpBusy
+ * @module httpBusy
  * @description
- * hook ui-router supporting loading screens, no extra code is required
- * just include!
+ * # httpBusy
+ * 
+ * Create an interceptor and attached to $http, this interceptor count
+ * the number of request in-progress and enable angular-busy based on that.
+ * broadcast an event when busy start
+ * 
+ * To ignore this interceptor send `noBusy: true` in $http params
+ * @example
+   $http({
+     method: 'GET',
+     url: '/api/xxx',
+     noBusy: true
+   });
  */
+/**
+ * @ngdoc event
+ * @name httpBusy#$httpBusy
+ * @eventType broadcast on root scope
+ * @description
+ * Broadcasted on the first request in-progess
+ */
+/**
+ * @ngdoc event
+ * @name httpBusy#$httpIdle
+ * @eventType broadcast on root scope
+ * @description
+ * Broadcasted when there is no request pending
+ */
+
 angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 .factory('httpBusyInterceptor', function($q, $rootScope, $log, chainLoadingQ) {
   var requests = 0;
@@ -20,7 +47,7 @@ angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 
   return {
     request: function(config) {
-      if (config.noLoading) {
+      if (config.noBusy) {
         return config;
       }
 
@@ -28,16 +55,15 @@ angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 
       if (requests === 1) {
         defer = chainLoadingQ();
+        $rootScope.$broadcast('$httpBusy');
       }
 
       //$log.log('(httpLoadingInterceptor) request', requests, config.url);
 
-      // Show loader
-      $rootScope.$broadcast('$loading');
       return config;
     },
     response: function(response) {
-      if (response.config && response.config.noLoading) {
+      if (response.config && response.config.noBusy) {
         return response;
       }
 
@@ -45,14 +71,14 @@ angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 
       if ((--requests) === 0) {
         // Hide loader
-        $rootScope.$broadcast('$loaded');
+        $rootScope.$broadcast('$httpIdle');
         defer.resolve();
       }
 
       return response;
     },
     responseError: function(response) {
-      if (response.config && response.config.noLoading) {
+      if (response.config && response.config.noBusy) {
         return $q.reject(response);
       }
 
@@ -60,7 +86,7 @@ angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 
       if ((--requests) === 0) {
         // Hide loader
-        $rootScope.$broadcast('$loaded');
+        $rootScope.$broadcast('$httpIdle');
         defer.resolve();
       }
 

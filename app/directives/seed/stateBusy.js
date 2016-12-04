@@ -9,7 +9,10 @@ export default 'stateBusy';
 /**
  * @ngdoc module
  * @name stateBusy
+ * @module stateBusy
  * @description
+ * # stateBusy
+ * 
  * hook ui-router supporting loading screens, no extra code is required
  * just include!
  */
