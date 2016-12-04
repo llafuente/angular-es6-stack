@@ -41,7 +41,7 @@ gulp.task("webpack-dev-server", function(callback) {
 
 gulp.task('karma', function(done) {
   var server = new KarmaServer({
-	  configFile: __dirname + '/test/karma.conf.js',
+	  configFile: __dirname + '/karma.conf.js',
 	  singleRun: false
   }, done);
   server.start();
@@ -49,7 +49,7 @@ gulp.task('karma', function(done) {
 
 gulp.task('karma:ci', function(done) {
 	var server = new KarmaServer({
-  	  configFile: __dirname + '/test/karma.ci.conf.js',
+  	  configFile: __dirname + '/karma.ci.conf.js',
   	  singleRun: true
     }, done);
     server.start();

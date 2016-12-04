@@ -68,7 +68,7 @@ module.exports = {
             }
           },
         */
-          { loader: 'babel-loader' }
+          { loader: 'babel-loader' },
         ]
       },
       // new ExtractTextPlugin('css/app.css', { allChunks: true })
@@ -86,7 +86,8 @@ module.exports = {
       
     ]
   },
-  devtool: "source-map",
+  //devtool: "source-map",
+  devtool: "inline-source-map",
   plugins: [
     new ExtractTextPlugin("styles.css")
   ]

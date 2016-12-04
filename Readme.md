@@ -1,3 +1,9 @@
+Prerequites
+
+```bash
+npm i -g gulp-cli
+```
+
 Done
 
 * process images in css, sass & htmls
@@ -6,6 +12,9 @@ Done
 * eslint js
 * css/js source map
 * bootstrap v4
+* karma test (ci/dev)
+* karma coverage using: babel-plugin-istanbul
+
 
 TODO
 
@@ -13,7 +22,6 @@ TODO
 * HMR (--inline --hot)
 * JSON API
 * inetsys-seed
-* karma
 * protractor
 * source-map in browser
 
