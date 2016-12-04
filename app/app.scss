@@ -1,0 +1,15 @@
+// @import "../nodes_modules/bootstrap/scss/bootstrap.scss";
+
+@import 'bootstrap/scss/bootstrap.scss';
+@import "components/main/main.scss";
+
+// xs, sm, md, lg
+@include media-breakpoint-up(sm) {
+	
+}
+@include media-breakpoint-down(sm) {
+	
+}
+@include media-breakpoint-between(sm, lg) {
+	
+}

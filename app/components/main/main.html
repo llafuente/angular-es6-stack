@@ -10,6 +10,16 @@
         <p>With a little help from <a href="https://yeoman.io">Yeoman</a></p>
     </div>
     <button class="btn btn-primary"
-    ng-click="error()"
+    ng-click="mainCtrl.error()"
     >throw!</button>
+
+    <button class="btn btn-primary"
+    ng-click="mainCtrl.error()"
+    ng-click-if="true"
+    >throw!</button>
+
+    <button class="btn btn-primary"
+    ng-click="mainCtrl.error()"
+    ng-click-if="false"
+    >do not throw!</button>
 </section>

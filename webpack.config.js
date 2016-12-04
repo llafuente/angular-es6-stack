@@ -46,7 +46,12 @@ module.exports = {
             {
               loader: 'sass-loader',
               query: {
-                sourceMaps: !isProduction
+                root: path.resolve(__dirname, 'app'),
+                sourceMaps: !isProduction,
+                includePaths: [
+                  path.resolve(__dirname, 'app'),
+                  path.resolve(__dirname, 'node_modules')
+                ]
               }
             }
           ]
