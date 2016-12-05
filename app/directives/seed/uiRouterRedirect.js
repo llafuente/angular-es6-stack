@@ -4,12 +4,6 @@ import 'angular-ui-router';
 
 export default 'uiRouterRedirect';
 
-//
-// 
-// example:
-
-// 
-//
 /**
  * @ngdoc module
  * @name uiRouterRedirect

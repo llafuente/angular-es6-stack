@@ -15,6 +15,7 @@ import stateBusy from 'directives/seed/stateBusy';
 import httpBusy from 'directives/seed/httpBusy';
 import selectValue from 'directives/seed/selectValue';
 import uiRouterRedirect from 'directives/seed/uiRouterRedirect';
+import JWTAuth from 'directives/seed/JWTAuth';
 //import 'services/version-service';
 
 import mainRoutes from 'components/main/main.routes.config';
@@ -36,6 +37,7 @@ angular.module('app', [
   stateBusy,
   httpBusy,
   uiRouterRedirect,
+  JWTAuth,
 
   /*, 'version'*/]);
 
@@ -48,9 +50,9 @@ angular.module('app')
 .config(BusyRoutes)
 .config(RedirectRoutes)
 .config(SelectValueRoutes)
-.controller('BusyController', BusyController)
-.controller('RedirectController', RedirectController)
-.controller('SelectValueController', SelectValueController)
+.controller(BusyController.name, BusyController)
+.controller(RedirectController.name, RedirectController)
+.controller(SelectValueController.name, SelectValueController)
 .selectValue('seedTestValue', [
   {id: 0, label: 'option 0'},
   {id: 1, label: 'option 1'},
