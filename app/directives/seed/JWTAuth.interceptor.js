@@ -1,3 +1,13 @@
+/**
+ * @ngdoc interceptor
+ * @function
+ * @name JWTAuthInterceptor
+ * @memberOf module:JWTAuth
+ * @description
+ * # JWTAuthInterceptor
+ * 
+ * Add Authorization header.
+ */
 export default function JWTAuthInterceptor($injector, $q, $log) {
   return {
     // Add authorization token to headers
@@ -7,22 +17,24 @@ export default function JWTAuthInterceptor($injector, $q, $log) {
       config.headers = config.headers || {};
 
       var t = Auth.getToken();
-      var domain_blacklisted = JWTAuthConfig.no_token_header.some(function(domain) {
+      var domain_blacklisted = JWTAuthConfig.domainBlacklistHeader.some(function(domain) {
         return config.url.indexOf(domain) !== -1;
       });
 
-      $log.debug('(JWTAuthInterceptor)', config.url, domain_blacklisted, JWTAuthConfig.no_token_header);
+      $log.debug('(JWTAuthInterceptor)', config.url, domain_blacklisted, JWTAuthConfig.domainBlacklistHeader);
 
       if (t && !domain_blacklisted) {
-        config.headers[JWTAuthConfig.token_header] = JWTAuthConfig.token_format.replace(/%token%/g, t);
+        config.headers[JWTAuthConfig.token.header] = JWTAuthConfig.token.format.replace(/%token%/g, t);
       }
       return config;
     },
     responseError: function(response) {
       var JWTAuthConfig = $injector.get('JWTAuthConfig');
       var Auth = $injector.get('Auth');
+      
+      console.log('(responseError)', response.headers);
 
-      if (response.headers && response.headers(JWTAuthConfig.expiration_header)) {
+      if (response.headers && response.headers(JWTAuthConfig.apiExpirationHeader)) {
         Auth.logout();
       }
 

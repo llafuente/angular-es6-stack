@@ -15,7 +15,6 @@ export default 'httpBusy';
  * 
  * Create an interceptor and attached to $http, this interceptor count
  * the number of request in-progress and enable angular-busy based on that.
- * broadcast an event when busy start
  * 
  * To ignore this interceptor send `noBusy: true` in $http params
  * @example
@@ -27,16 +26,24 @@ export default 'httpBusy';
  */
 /**
  * @ngdoc event
- * @name httpBusy#$httpBusy
+ * @event
+ * @name $httpBusy
+ * @memberOf module:httpBusy
  * @eventType broadcast on root scope
  * @description
+ * # $httpBusy
+ *
  * Broadcasted on the first request in-progess
  */
 /**
  * @ngdoc event
- * @name httpBusy#$httpIdle
+ * @event
+ * @name $httpIdle
+ * @memberOf module:httpBusy
  * @eventType broadcast on root scope
  * @description
+ * # $httpIdle
+ *
  * Broadcasted when there is no request pending
  */
 

@@ -5,9 +5,35 @@ import JWTAuthInterceptor from './JWTAuth.interceptor.js';
 import AuthFactory from './JWTAuth.factory.js';
 
 export default 'JWTAuth';
-// factory fast access via $rootScope.auth
-// current user: $rootScope.user
-// emit $logout & $login event to rootScope
+/**
+ * @ngdoc module
+ * @name JWTAuth
+ * @module JWTAuth
+ *
+ * @description
+ * Module to handle user/session.
+ * It's exposed to $rootScope.Auth for easy to use.
+ */
+/**
+ * @ngdoc event
+ * @event
+ * @name $login
+ * @memberOf module:JWTAuth
+ * @eventType broadcast on root scope
+ * @description
+ * # JWTAuth#$login
+ * Broadcasted when user is fully logged in
+ */
+/**
+ * @ngdoc event
+ * @event
+ * @name $logout
+ * @memberOf module:JWTAuth
+ * @eventType broadcast on root scope
+ * @description
+ * # JWTAuth#$logout
+ * Broadcasted when user is logged out (manually or automatically)
+ */
 angular
 .module('JWTAuth', ['ui.router', 'ngCookies'])
 .provider('JWTAuthConfig', JWTAuthConfigProvider)

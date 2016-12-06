@@ -1,7 +1,8 @@
 /**
- * @ngdoc object
- * @name httpUrlRewrite.httpUrlRewriteProvider
- * @module httpUrlRewrite
+ * @ngdoc provider
+ * @function
+ * @name httpUrlRewriteProvider
+ * @memberOf module:httpUrlRewrite
  * @description
  * # httpUrlRewriteProvider
  * 

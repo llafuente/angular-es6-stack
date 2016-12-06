@@ -1,36 +1,60 @@
-export default function AuthFactory($location, $rootScope, $http, $cookies, $state, $log, JWTAuthConfig) {
+/**
+ * @ngdoc factory
+ * @class Auth
+ * @memberOf module:JWTAuth
+ *
+ * @description
+ * # Auth
+ * 
+ * Auth factory.
+ * * Keep user state (login/logout)
+ * * Check permissions
+ */
+export default function Auth($location, $rootScope, $http, $cookies, $state, $log, JWTAuthConfig) {
   var currentUser = {};
-  var login_in_prog = null;
+  var logginInProgess = null;
 
-  function set_current_user(val) {
-    $log.debug('(Auth) set_current_user');
+  function _setCurrentUser(val) {
+    $log.debug('(Auth) _setCurrentUser');
 
     $rootScope.user = val;
     currentUser = val;
   }
 
-  function login_me() {
+  function _logMeIn() {
     return $http({
-      method: JWTAuthConfig.api_users_data_method,
-      url: JWTAuthConfig.api_users_data
+      method: JWTAuthConfig.apiUsersMeta.method,
+      url: JWTAuthConfig.apiUsersMeta.url
     })
     .then(function(response) {
-      set_current_user(response.data);
+      _setCurrentUser(response.data);
       $rootScope.$emit('$login');
     });
   }
 
-  function get_token() {
-    return $cookies.get(JWTAuthConfig.cookie_name);
+  function _getToken() {
+    return $cookies.get(JWTAuthConfig.cookie.name) || null;
   }
   // set token will set a cookie in current domain and parent domain
   // for no good reason :S
-  function set_token(data) {
-    $cookies.put(JWTAuthConfig.cookie_name, data, {
+  function _setToken(data) {
+    $cookies.put(JWTAuthConfig.cookie.name, data, {
       path: '/',
       secure: $location.protocol() === 'https',
-      domain: JWTAuthConfig.cookie_domain
+      domain: JWTAuthConfig.cookie.domain
     });
+  }
+  // remove token will remove the cookie in current domain
+  // and all parent domains
+  function _removeToken() {
+    // main domain
+    $cookies.remove(JWTAuthConfig.cookie.name, {
+      path: '/',
+      secure: $location.protocol() === 'https',
+      domain: JWTAuthConfig.cookie.domain
+    });
+
+    $log.debug('(Auth) _getToken() ', _getToken());
   }
 
   function Base64URLDecode(base64UrlEncodedValue) {
@@ -46,20 +70,7 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
     return res;
   }
 
-  // remove token will remove the cookie in current domain
-  // and all parent domains
-  function remove_token() {
-    // main domain
-    $cookies.remove(JWTAuthConfig.cookie_name, {
-      path: '/',
-      secure: $location.protocol() === 'https',
-      domain: JWTAuthConfig.cookie_domain
-    });
-
-    $log.debug('(Auth) get_token() ', get_token());
-  }
-
-  function has_role(roles, chk_fn) {
+  function _hasRole(roles, chk_fn) {
     if (!roles) {
       return true;
     }
@@ -84,7 +95,7 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
   // permissions can be:
   // * a list of strings
   // * an object-boolean-terminated user: { create: true, delete: false }
-  function has_permission(perms, chk_fn) {
+  function _hasPermission(perms, chk_fn) {
     if (!perms) {
       return true;
     }
@@ -118,28 +129,30 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
     });
   }
 
-  $log.debug('(Auth) Token', get_token());
+  $log.debug('(Auth) Token', _getToken());
 
-  if (get_token()) {
-    login_in_prog = login_me()
+  if (_getToken()) {
+    logginInProgess = _logMeIn()
     .finally(function() {
-      login_in_prog = null;
+      logginInProgess = null;
     });
   }
-
 
   return ($rootScope.Auth = {
 
     /**
      * Authenticate user and save token
-     *
-     * @param  {Object}   user     - login info
-     * @return {Promise}
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param username {string}
+     * @param password {String}
+     * @param remindme {Boolean}
+     * @returns {Promise}
      */
     login: function(username, password, remindme) {
-      return (login_in_prog = $http({
+      return (logginInProgess = $http({
         method: 'POST',
-        url: JWTAuthConfig.api_auth,
+        url: JWTAuthConfig.apiAuthUrl,
         data: {
           username: username,
           password: password,
@@ -149,9 +162,9 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
       .then(function(response) {
         $log.debug('(Auth) login success', response.data);
 
-        set_token(response.data.token);
+        _setToken(response.data.token);
 
-        return login_me().then(function() {
+        return _logMeIn().then(function() {
           return response;
         });
       }, function(response) {
@@ -161,31 +174,37 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
         return response;
       }.bind(this))
       .finally(function() {
-        login_in_prog = null;
+        logginInProgess = null;
       }));
     },
-
-    refreshSession: function() {
-      return login_me();
-    },
-
     /**
-     * logout first, call logout API later
-     * $emit $logout event to $rootScope after the api call
-     *
-     * @param  {Boolean}
+     * refresh user metadata
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     */
+    refreshSession: function() {
+      return _logMeIn();
+    },
+    /**
+     * logout user first.
+     * Then call logout API if configured.
+     * Then broadcast $logout event
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param redirect_to {Boolean}
      */
     logout: function(redirect_to) {
-      set_current_user({});
-      var token = get_token();
-      remove_token();
+      _setCurrentUser({});
+      var token = _getToken();
+      _removeToken();
 
-      if (token && JWTAuthConfig.api_users_logout && JWTAuthConfig.api_users_logout_method) {
+      if (token && JWTAuthConfig.apiUsersLogout.url && JWTAuthConfig.apiUsersLogout.method) {
         var headers = {};
-        headers[JWTAuthConfig.token_header] = token;
+        headers[JWTAuthConfig.token.header] = token;
         $http({
-          method: JWTAuthConfig.api_users_logout_method,
-          url: JWTAuthConfig.api_users_logout,
+          method: JWTAuthConfig.apiUsersLogout.method,
+          url: JWTAuthConfig.apiUsersLogout.url,
           headers: headers
         })
         .finally(function() {
@@ -204,11 +223,12 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
         $state.go(redirect_to);
       }
     },
-
     /**
-     * Gets all available info on authenticated user
-     *
-     * @return {Object} user
+     * Get metadata from current logged user, or null
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @returns {Object | Null} metadata
      */
     getCurrentUser: function() {
       return currentUser;
@@ -217,6 +237,8 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
     /**
      * Check if a user is logged in
      *
+     * @function
+     * @memberOf module:JWTAuth.Auth
      * @return {Boolean}
      */
     isLoggedIn: function() {
@@ -225,14 +247,26 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
 
     /**
      * Waits for currentUser to resolve before checking if user is logged in
+     *
+     * @example
+     * Auth.isLoggedInAsync(function(loggedIn) {
+     *   if (loggedIn) {
+     *     // show your private staff...
+     *   } else {
+     *     // show login!
+     *   }  
+     * }) 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param cb {Function} will recieve a boolean
      */
     isLoggedInAsync: function(cb) {
-      $log.debug('(Auth) isLoggedInAsync', currentUser, login_in_prog);
+      $log.debug('(Auth) isLoggedInAsync', currentUser, logginInProgess);
 
       if (currentUser.hasOwnProperty('id')) {
         cb(true);
-      } else if (login_in_prog) {
-        login_in_prog
+      } else if (logginInProgess) {
+        logginInProgess
           .then(function() {
             cb(true);
           }).catch(function() {
@@ -242,24 +276,83 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
         cb(false);
       }
     },
-    hasRoles: function(roles) {
-      return has_role(roles, 'every');
-    },
-    hasRolesAny: function(roles) {
-      return has_role(roles, 'some');
-    },
-    hasPermissions: function(perms) {
-      return has_permission(perms, 'every');
-    },
-    hasPermissionsAny: function(perms) {
-      return has_permission(perms, 'some');
+    /**
+     * Check if current user has role.
+     * NOTE: return false is user is not logged in.
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param role {String}
+     * @returns {Boolean}
+     */
+    hasRole: function hasRole(role) {
+      return _hasRole([role], 'every');
     },
     /**
-     * Get auth token
+     * Check if current user has all roles sent.
+     * NOTE: return false is user is not logged in.
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param roles {Array.<String>}
+     * @returns {Boolean}
      */
-    getToken: get_token,
+    hasRoles: function(roles) {
+      return _hasRole(roles, 'every');
+    },
+    /**
+     * Check if current user has at least one of the roles sent.
+     * NOTE: return false is user is not logged in.
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param roles {Array.<String>}
+     * @returns {Boolean}
+     */
+    hasRolesAny: function(roles) {
+      return _hasRole(roles, 'some');
+    },
+    /**
+     * Check if current user has all permisions sent.
+     * NOTE: return false is user is not logged in.
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param perms {Array.<String>}
+     * @returns {Boolean}
+     */
+    hasPermissions: function(perms) {
+      return _hasPermission(perms, 'every');
+    },
+    /**
+     * Check if current user has at least one permisions
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param perms {Array.<String>}
+     * @returns {Boolean} true if user logged and at least one role
+     * false if user not logged or role not found
+     */
+    hasPermissionsAny: function(perms) {
+      return _hasPermission(perms, 'some');
+    },
+    /**
+     * Get JWT Token
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @returns {String}
+     */
+    getToken: _getToken,
+    /**
+     * Get Expiration timestamp
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @returns {Number|Null}
+     */
     getTokenExp: function() {
-      var tk = get_token();
+      var tk = _getToken();
       if (!tk) {
         return null;
       }
@@ -274,11 +367,17 @@ export default function AuthFactory($location, $rootScope, $http, $cookies, $sta
       return payload.exp * 1000;
     },
     /**
-     * Manually set session token
+     * Manually set session token, after that will try to retrive the user
+     * metadata
+     * 
+     * @function
+     * @memberOf module:JWTAuth.Auth
+     * @param token {String}
+     * @returns {Promise}
      */
     setToken: function(token) {
-      set_token(token);
-      return login_me();
+      _setToken(token);
+      return _logMeIn();
     }
   });
 }

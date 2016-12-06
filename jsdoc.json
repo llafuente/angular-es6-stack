@@ -1,0 +1,19 @@
+{
+  "source": {
+    "include": ["app/"]
+  },
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./docs/",
+    "recurse": true,
+    "tutorials": "./docs/tutorials"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/angular-jsdoc/common/plugins/ngdoc"
+  ],
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true
+  }
+}

@@ -3,7 +3,6 @@ import httpUrlRewriteInterceptor from './httpUrlRewrite.interceptor.js'
 export default 'httpUrlRewrite';
 /**
  * @ngdoc module
- * @name httpUrlRewrite
  * @module httpUrlRewrite
  * @description
  * # httpUrlRewrite

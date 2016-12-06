@@ -16,6 +16,7 @@ Done
 * karma coverage using: babel-plugin-istanbul
 * source-map working (at least on chrome)
 * API proxy
+* jsdoc
 
 
 TODO
@@ -26,6 +27,9 @@ TODO
 * inetsys-seed
 * protractor
 
+* use dgeni for documentation
+  * package.json.scripts: "dgeni": "node_modules/.bin/dgeni ./docs/config/index.js"
+  * package.json.devDependencies: "dgeni": "^0.4.2",
 
 asset inline
     "resolve-url-loader": "^1.6.0",

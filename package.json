@@ -1,9 +1,14 @@
 {
   "name": "app",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/llafuente/webpack-angular-bootstrap-es6-seed.js.git"
+  },
   "scripts": {
     "server": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base dist/",
-    "webpack": "node_modules/webpack/bin/webpack.js --progress --colors --display-error-details"
+    "webpack": "node_modules/webpack/bin/webpack.js --progress --colors --display-error-details",
+    "doc": "mkdir -p docs/tutorials; node_modules/.bin/jsdoc --configure ./jsdoc.json"
   },
   "dependencies": {
     "angular": "1.5.9",
@@ -17,6 +22,7 @@
     "lodash": "^4.17.2"
   },
   "devDependencies": {
+    "angular-jsdoc": "^1.5.0",
     "angular-mocks": "1.5.9",
     "autoprefixer-loader": "3.2.0",
     "babel": "6.5.2",
@@ -26,6 +32,7 @@
     "babel-plugin-istanbul": "^3.0.0",
     "babel-polyfill": "6.16.0",
     "babel-preset-es2015": "6.18.0",
+    "canonical-path": "0.0.2",
     "core-js": "2.4.1",
     "css-loader": "0.26.1",
     "eslint": "3.11.1",
@@ -44,6 +51,7 @@
     "jasmine": "2.5.2",
     "jasmine-core": "2.5.2",
     "jasmine-reporters": "2.2.0",
+    "jsdoc": "^3.4.3",
     "karma": "1.3.0",
     "karma-cli": "1.0.1",
     "karma-coverage": "1.1.1",

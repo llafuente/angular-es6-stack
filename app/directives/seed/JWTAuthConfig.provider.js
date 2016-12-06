@@ -1,43 +1,51 @@
 /**
  * @ngdoc object
- * @name JWTAuth.JWTAuthProvider
- * @module httpUrlRewrite
+ * @function
+ * @name JWTAuthProvider
+ * @memberOf module:JWTAuth
  * @description
  * # JWTAuthProvider
  * 
  * The provider contains:
- * * api_users_data: method that return user metadata
- * * api_users_data_method: HTTP method that return user metadata
- * * api_auth: url (must be POST for security reason) that return the token
- * * state_after_login: after used is logged in where to redirect him
- * * api_users_logout_method: HTTP method for logout
- * * api_users_logout: logout url, null to disable request
- * * no_token_header: list of domain list where not send Auth header
- * * token_header: name of the header to store the Authorization token
- * * token_format: format of the token to send: 'Bearer %token%' is the default
- * * cookie_name: name of the cookie to store the token
- * * cookie_domain: domain of the cookie
- * * expiration_header: server side header to force session expired, force logout.
+ * * apiUsersMeta.url: HTTP method that return user metadata
+ * * apiUsersMeta.method: method that return user metadata
+ * * apiAuthUrl: url (must be POST for security reason) that return the token
+ * * stateAfterLogin: after used is logged in where to redirect him
+ * * apiUsersLogout.method: HTTP method for logout
+ * * apiUsersLogout.url: logout url, null to disable request
+ * * domainBlacklistHeader: list of domains where not send Auth header
+ * * token.header: name of the header to store the Authorization token
+ * * token.format: format of the token to send: 'Bearer %token%' is the default
+ * * cookie.name: name of the cookie to store the token
+ * * cookie.domain: domain of the cookie
+ * * expirationHeader: server side header to force session expired, force logout.
  *
  * @example
-   angular.module('app').config(function(JWTAuthProvider) {
-     JWTAuthProvider.
-
-   })
+ * angular.module('app').config(function(JWTAuthProvider) {
+ *   JWTAuthProvider.apiUsersMeta.url = '/user/meta'
+ * });
  */
 export default function JWTAuthConfigProvider() {
-  this.api_users_data_method = 'POST';
-  this.api_users_data = '/api/users/me';
-  this.api_auth = '/api/auth';
-  this.state_after_login = 'users';
-  this.api_users_logout_method = 'POST';
-  this.api_users_logout = '/api/logout';
-  this.no_token_header = [];
-  this.token_header = 'X-Access-Token';
-  this.token_format = 'Bearer %token%';
-  this.cookie_name = 'token';
-  this.cookie_domain = null;
-  this.expiration_header = 'X-Session-Expired';
+  this.apiUsersMeta = {
+    method: 'POST',
+    url: '/api/users/me'
+  };
+  this.apiAuthUrl = '/api/auth';
+  //this.stateAfterLogin = 'users';
+  this.apiUsersLogout = {
+    method: 'POST',
+    url: '/api/logout'
+  };
+  this.domainBlacklistHeader = [];
+  this.token = {
+    header: 'X-Access-Token',
+    format: 'Bearer %token%'
+  }
+  this.cookie = {
+    name: 'token',
+    domain: null
+  };
+  this.apiExpirationHeader = 'X-Force-Logout';
 
   this.$get = function() {
     return this;

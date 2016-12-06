@@ -1,7 +1,8 @@
 /**
  * @ngdoc function
- * @name httpUrlRewrite.httpUrlRewriteInterceptor
- * @module httpUrlRewrite
+ * @function
+ * @name httpUrlRewriteInterceptor
+ * @memberOf module:httpUrlRewrite
  * @description
  * # httpUrlRewriteInterceptor
  * 
