@@ -1,0 +1,24 @@
+<div class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" translate>{{ title || 'Se ha producido un error'}}</h3>
+      </div>
+
+      <div class="modal-body">
+        <div ng-if="template">
+          <div ng-include="template">
+          </div>
+        </div>
+
+        <ul ng-if="!template">
+          <li ng-repeat="err in error.list track by $index" translate>{{err}}</li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()" translate>OK</button>
+      </div>
+    </div>
+  </div>
+</div>
