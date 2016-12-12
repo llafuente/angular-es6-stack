@@ -7,5 +7,5 @@ export default /*@ngInject*/ function($stateProvider) {
     templateUrl: indexHTML,
     controller: 'ErrorHandlingController',
     controllerAs: 'ctrl'
-  })
+  });
 }

@@ -5,7 +5,7 @@
  * @memberOf module:JWTAuth
  * @description
  * # JWTAuthProvider
- * 
+ *
  * The provider contains:
  * * apiUsersMeta.url: HTTP method that return user metadata
  * * apiUsersMeta.method: method that return user metadata
@@ -40,7 +40,7 @@ export default function JWTAuthConfigProvider() {
   this.token = {
     header: 'X-Access-Token',
     format: 'Bearer %token%'
-  }
+  };
   this.cookie = {
     name: 'token',
     domain: null

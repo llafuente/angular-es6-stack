@@ -41,9 +41,9 @@ angular.module('app', [
   httpBusy,
   uiRouterRedirect,
   JWTAuth,
-  httpErrorHandling,
-
-  /*, 'version'*/]);
+  httpErrorHandling
+  /*, 'version'*/
+]);
 
 selectValue(angular.module('app'));
 

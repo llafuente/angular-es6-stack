@@ -12,10 +12,10 @@ export default 'httpBusy';
  * @module httpBusy
  * @description
  * # httpBusy
- * 
+ *
  * Create an interceptor and attached to $http, this interceptor count
  * the number of request in-progress and enable angular-busy based on that.
- * 
+ *
  * To ignore this interceptor send `noBusy: true` in $http params
  * @example
    $http({
@@ -49,8 +49,8 @@ export default 'httpBusy';
 
 angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 .factory('httpBusyInterceptor', function($q, $rootScope, $log, chainLoadingQ) {
-  var requests = 0;
-  var defer = null;
+  let requests = 0;
+  let defer = null;
 
   return {
     request: function(config) {

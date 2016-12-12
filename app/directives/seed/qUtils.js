@@ -14,7 +14,7 @@ angular.module('qUtils', [])
 })
 .factory('chainLoadingQ', function($rootScope, $q) {
   return function chainLoadingQ() {
-    var defer = $q.defer();
+    const defer = $q.defer();
     if (!$rootScope.loading || $rootScope.loading.$$state.status === 1) {
       $rootScope.loading = defer.promise;
     } else {
@@ -22,4 +22,4 @@ angular.module('qUtils', [])
     }
     return defer;
   };
-})
+});

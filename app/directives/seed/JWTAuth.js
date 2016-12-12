@@ -43,4 +43,4 @@ angular
   $httpProvider.interceptors.push('JWTAuthInterceptor');
 })
 // just run it so it can autologin
-.run(function(Auth) {});
+.run(function(Auth) {}); // eslint-disable-line no-unused-vars

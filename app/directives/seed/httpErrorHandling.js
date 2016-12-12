@@ -22,20 +22,19 @@ angular
   };
 })
 // This http interceptor listens for authentication failures
-.factory('errorHandler', function($injector, $log, errorConfig, $q, $animate) {
-  var error_list = [];
-  var instance;
+.factory('errorHandler', function($injector, $log, errorConfig, $q) {
+  const errorList = [];
+  let instance;
 
-  function pop_error(reject) {
-    $log.debug('(errorHandler) pop_error - error_list', error_list);
-    var err_data = error_list[0];
-    error_list.splice(0, 1);
+  function popError(reject) {
+    $log.debug('(errorHandler) popError - errorList', errorList);
+    const err = errorList[0];
+    errorList.splice(0, 1);
 
     //deferred
-    var i;
-    for (i = 0; i < err_data.deferred.length; ++i) {
-      if (err_data.deferred[i] && reject) {
-        err_data.deferred[i].reject(err_data.response[i]);
+    for (let i = 0; i < err.deferred.length; ++i) {
+      if (err.deferred[i] && reject) {
+        err.deferred[i].reject(err.response[i]);
       }
     }
   }
@@ -45,49 +44,49 @@ angular
   }
 
   // check if the error can be squashed
-  function squash_errors() {
-    if (error_list[0].type) {
+  function squashErrors() {
+    if (errorList[0].type) {
       return;
     }
 
     // squask all un-type related errors
-    var i;
-    var err_data = error_list[0];
-    for (i = 1; i < error_list.length; ++i) {
-      if (!error_list[i].error.type) {
-        err_data.error.list = err_data.error.list
-          .concat(error_list[i].error.list)
+    let i;
+    const err = errorList[0];
+    for (i = 1; i < errorList.length; ++i) {
+      if (!errorList[i].error.type) {
+        err.error.list = err.error.list
+          .concat(errorList[i].error.list)
           .filter(unique);
-        err_data.response.push(error_list[i].response[0]);
-        err_data.deferred.push(error_list[i].deferred[0]);
-        error_list.splice(i, 1);
+        err.response.push(errorList[i].response[0]);
+        err.deferred.push(errorList[i].deferred[0]);
+        errorList.splice(i, 1);
         --i;
       }
     }
   }
 
-  function show_modal() {
-    if (!error_list.length) {
-      return;
+  function showModal() {
+    if (!errorList.length) {
+      return null;
     }
 
     if (instance) {
-      squash_errors();
+      squashErrors();
 
       return instance.result.then(function() {
-        show_modal();
+        showModal();
       });
     }
 
-    var ModalService = $injector.get('ModalService');
-    var $http = $injector.get('$http');
+    const ModalService = $injector.get('ModalService');
+    const $http = $injector.get('$http');
     // TODO review why I did this ?
-    // var $rootScope = $injector.get('$rootScope');
+    // let $rootScope = $injector.get('$rootScope');
 
 
-    var err_data = error_list[0];
-    var err = err_data.error;
-    var templateUrl = errorConfig.defaultTemplate;
+    const errData = errorList[0];
+    const err = errData.error;
+    let templateUrl = errorConfig.defaultTemplate;
     if (err.type) {
       templateUrl = errorConfig.templates[err.type];
     }
@@ -108,8 +107,8 @@ angular
           // why not clone?
           // we may need to add more than one param because there are
           // two confirmations
-          //var config = angular.copy(err_data.response[0].config);
-          var config = err_data.response[0].config;
+          //let config = angular.copy(err.response[0].config);
+          const config = err.response[0].config;
 
           $log.debug('(errorHandler) retry', config, param);
           // TODO this could append multiple times...
@@ -124,23 +123,23 @@ angular
             angular.extend(config.data, body);
           }
 
-          pop_error(false);
+          popError(false);
           instance = null;
           close(null);
 
           $http(config)
           .then(function(response) {
             $log.debug('(errorHandler) success', response);
-            err_data.deferred[0].resolve(response);
+            err.deferred[0].resolve(response);
           }, function(response) {
             $log.debug('(errorHandler) error', response);
-            err_data.deferred[0].reject(response);
+            err.deferred[0].reject(response);
           });
         };
 
         $scope.close = function() {
           $log.debug('(errorHandler) close');
-          pop_error(true);
+          popError(true);
 
           instance = null;
           close(null);
@@ -148,7 +147,7 @@ angular
 
         $scope.ok = function() {
           $log.debug('(errorHandler) ok');
-          pop_error(true);
+          popError(true);
 
           instance = null;
           close(null);
@@ -160,11 +159,13 @@ angular
         angular.element(modal.element).addClass('in');
       });
     });
+
+    return null;
   }
 
   return {
     push: function(error, response) {
-      var serr = {
+      const serr = {
         error: error,
         deferred: [null],
         response: [response],
@@ -177,21 +178,21 @@ angular
         serr.deferred[0] = $q.defer();
       }
 
-      error_list.push(serr);
+      errorList.push(serr);
 
-      show_modal();
+      showModal();
 
       return serr.deferred[0] ? serr.deferred[0].promise : $q.reject(response);
     }
   };
 })
 .factory('errorFormat', function() {
-  var text_html = new RegExp('text\/html', 'i');
+  const textHtmlRE = new RegExp('text\/html', 'i');
   return function(response) {
     // html-error ?
     if (
-      'string' === typeof response.data &&
-      text_html.test(response.headers('Content-Type'))
+      typeof response.data === 'string' &&
+      textHtmlRE.test(response.headers('Content-Type'))
     ) {
       return {
         html: response.data,
@@ -199,17 +200,17 @@ angular
       };
     }
 
-    var error = {
+    let error = {
       list: [],
       type: null,
       title: null
     };
 
-    if ('string' === typeof response.data.title) {
+    if (typeof response.data.title === 'string') {
       error.title = response.data.title;
     }
 
-    if ('string' === typeof response.data) {
+    if (typeof response.data === 'string') {
       error.list = [response.data];
     } else if (Array.isArray(response.data)) {
       error.list = response.data.slice(0);
@@ -234,7 +235,7 @@ angular
 
       // manage 4XX & 5XX
       if (response.status >= 400 && (response.config && !response.config.noModalError)) {
-        var errors = errorFormat(response);
+        const errors = errorFormat(response);
 
         // TODO handle retry
         // TODO modal should be promisable?

@@ -1,3 +1,9 @@
 <h1>State is: {{ctrl.$state.current.name}}</h1>
+<pre>state: {{ctrl.$state.current | json}}</pre>
+<pre>params: {{ctrl.$stateParams | json}}</pre>
+
+<a class="btn btn-primary" ng-click="ctrl.to()">change state and keep state</a>
+
+<a class="btn btn-secondary" ng-click="ctrl.back()">go back</a>
 
 <div id="sub" ui-view></div>

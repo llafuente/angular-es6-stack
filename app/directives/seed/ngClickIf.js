@@ -4,7 +4,7 @@ export default /*@ngInject*/ function ngClickIf($log) {
     link: function($scope, $elem, $attrs) {
       $log.debug('(ngClickIf) attach to', $elem);
       $elem.on('click', function($event) {
-        var cond = $scope.$eval($attrs.ngClickIf);
+        const cond = $scope.$eval($attrs.ngClickIf);
         $log.debug('(ngClickIf) clicked: ', $attrs.ngClickIf, 'is', cond);
         if (!cond) {
           $log.debug('(ngClickIf) prevent!');
@@ -14,4 +14,4 @@ export default /*@ngInject*/ function ngClickIf($log) {
       });
     }
   };
-};
+}

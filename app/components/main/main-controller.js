@@ -5,6 +5,6 @@ export default /*@ngInject*/ class MainController {
   }
 
   error() {
-    throw new Error("what line!");
+    throw new Error('what line!');
   }
 }

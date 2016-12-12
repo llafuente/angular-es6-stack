@@ -5,14 +5,14 @@
  *
  * @description
  * # Auth
- * 
+ *
  * Auth factory.
  * * Keep user state (login/logout)
  * * Check permissions
  */
 export default function Auth($location, $rootScope, $http, $cookies, $state, $log, JWTAuthConfig) {
-  var currentUser = {};
-  var logginInProgess = null;
+  let currentUser = {};
+  let logginInProgess = null;
 
   function _setCurrentUser(val) {
     $log.debug('(Auth) _setCurrentUser');
@@ -57,20 +57,20 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     $log.debug('(Auth) _getToken() ', _getToken());
   }
 
-  function Base64URLDecode(base64UrlEncodedValue) {
-    var res;
-    var newValue = base64UrlEncodedValue.replace('-', '+').replace('_', '/');
+  function base64URLDecode(base64UrlEncodedValue) {
+    let res;
+    const newValue = base64UrlEncodedValue.replace('-', '+').replace('_', '/');
 
     try {
       res = decodeURIComponent(escape(window.atob(newValue)));
     } catch (e) {
-      throw 'Base64URL decode of JWT segment failed';
+      throw new Error('Base64URL decode of JWT segment failed');
     }
 
     return res;
   }
 
-  function _hasRole(roles, chk_fn) {
+  function _hasRole(roles, chkfn) {
     if (!roles) {
       return true;
     }
@@ -79,10 +79,13 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
       return false;
     }
 
-    if ('string' === typeof roles) {
-      roles = [roles];
+    let r = roles;
+
+    if (typeof r === 'string') {
+      r = [r];
     }
-    return roles[chk_fn](function(role) {
+
+    return r[chkfn](function(role) {
       // drop nulls, empty strings
       if (!role) {
         return true;
@@ -95,7 +98,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
   // permissions can be:
   // * a list of strings
   // * an object-boolean-terminated user: { create: true, delete: false }
-  function _hasPermission(perms, chk_fn) {
+  function _hasPermission(perms, chkfn) {
     if (!perms) {
       return true;
     }
@@ -104,11 +107,14 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
       return false;
     }
 
-    if ('string' === typeof perms) {
-      perms = [perms];
+    let p = perms;
+
+    if (typeof p === 'string') {
+      p = [p];
     }
 
-    return perms[chk_fn](function(perm) {
+    return p[chkfn](function(perm) {
+      let ref;
       // drop nulls, empty strings
       if (!perm) {
         return true;
@@ -118,7 +124,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
         return currentUser ? currentUser.permissions.indexOf(perm) !== -1 : false;
       }
       // currentUser.permissions is an object
-      var ref = currentUser.permissions;
+      ref = currentUser.permissions;
       return perm.split('.').every(function(k) {
         if (ref[k]) {
           ref = ref[k];
@@ -189,18 +195,18 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
      * logout user first.
      * Then call logout API if configured.
      * Then broadcast $logout event
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
-     * @param redirect_to {Boolean}
+     * @param redirectTo {Boolean}
      */
-    logout: function(redirect_to) {
+    logout: function(redirectTo) {
       _setCurrentUser({});
-      var token = _getToken();
+      const token = _getToken();
       _removeToken();
 
       if (token && JWTAuthConfig.apiUsersLogout.url && JWTAuthConfig.apiUsersLogout.method) {
-        var headers = {};
+        const headers = {};
         headers[JWTAuthConfig.token.header] = token;
         $http({
           method: JWTAuthConfig.apiUsersLogout.method,
@@ -211,21 +217,21 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
           // TODO review if this is the best site
           $rootScope.$emit('$logout');
 
-          if (redirect_to) {
-            $log.debug('(Auth) redirect logout', redirect_to);
+          if (redirectTo) {
+            $log.debug('(Auth) redirect logout', redirectTo);
 
-            $state.go(redirect_to);
+            $state.go(redirectTo);
           }
         });
-      } else if (redirect_to) {
-        $log.debug('(Auth) redirect logout', redirect_to);
+      } else if (redirectTo) {
+        $log.debug('(Auth) redirect logout', redirectTo);
 
-        $state.go(redirect_to);
+        $state.go(redirectTo);
       }
     },
     /**
      * Get metadata from current logged user, or null
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @returns {Object | Null} metadata
@@ -254,8 +260,8 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
      *     // show your private staff...
      *   } else {
      *     // show login!
-     *   }  
-     * }) 
+     *   }
+     * })
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param cb {Function} will recieve a boolean
@@ -279,7 +285,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     /**
      * Check if current user has role.
      * NOTE: return false is user is not logged in.
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param role {String}
@@ -291,7 +297,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     /**
      * Check if current user has all roles sent.
      * NOTE: return false is user is not logged in.
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param roles {Array.<String>}
@@ -303,7 +309,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     /**
      * Check if current user has at least one of the roles sent.
      * NOTE: return false is user is not logged in.
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param roles {Array.<String>}
@@ -315,7 +321,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     /**
      * Check if current user has all permisions sent.
      * NOTE: return false is user is not logged in.
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param perms {Array.<String>}
@@ -326,7 +332,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     },
     /**
      * Check if current user has at least one permisions
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param perms {Array.<String>}
@@ -338,7 +344,7 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     },
     /**
      * Get JWT Token
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @returns {String}
@@ -346,13 +352,13 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
     getToken: _getToken,
     /**
      * Get Expiration timestamp
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @returns {Number|Null}
      */
     getTokenExp: function() {
-      var tk = _getToken();
+      let tk = _getToken();
       if (!tk) {
         return null;
       }
@@ -363,13 +369,13 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
         return null;
       }
 
-      var payload = JSON.parse(Base64URLDecode(tk[1]));
+      const payload = JSON.parse(base64URLDecode(tk[1]));
       return payload.exp * 1000;
     },
     /**
      * Manually set session token, after that will try to retrive the user
      * metadata
-     * 
+     *
      * @function
      * @memberOf module:JWTAuth.Auth
      * @param token {String}

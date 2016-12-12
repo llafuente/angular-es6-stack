@@ -2,8 +2,8 @@ import busy1HTML from 'src/test/busy/busy1.html';
 import busy2HTML from 'src/test/busy/busy2.html';
 
 
-function add_delay ($q) {
-  var defer = $q.defer();
+function addDelay ($q) {
+  const defer = $q.defer();
   setTimeout(function() {
     defer.resolve();
   }, 1500);
@@ -22,7 +22,7 @@ export default /*@ngInject*/ function($stateProvider) {
     controller: 'BusyController',
     controllerAs: 'ctrl',
     resolve: {
-      delay: add_delay
+      delay: addDelay
     }
   })
   .state('busy.busy2', {
@@ -31,7 +31,7 @@ export default /*@ngInject*/ function($stateProvider) {
     controller: 'BusyController',
     controllerAs: 'ctrl',
     resolve: {
-      delay: add_delay
+      delay: addDelay
     }
   });
 }

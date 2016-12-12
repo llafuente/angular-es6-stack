@@ -10,10 +10,10 @@ export default function selectValueInjector(app) {
    * This remove boilerplate necessary for select and filters around your app.
    * It will create:
    * * angular.value with name an values passed
-   * * angular.value with name + Filters with values passed plus a null option 
+   * * angular.value with name + Filters with values passed plus a null option
    *   with filterLabel
    * * set rootScope[name] with the values passed
-   * * set rootScope[name + 'Filters'] with values passed plus a null option 
+   * * set rootScope[name + 'Filters'] with values passed plus a null option
    *   with filterLabel
    * * create a filter with filterName to transform id into readble labels
 
@@ -29,11 +29,11 @@ export default function selectValueInjector(app) {
       throw new Error('values must be an array');
     }
 
-    for(let i = 0; i < values.length; ++i) {
-      if (values[i].id == null) { //also undefined
+    for (let i = 0; i < values.length; ++i) {
+      if (values[i].id == null) { // eslint-disable-line no-eq-null, eqeqeq
         throw new Error(`value with id null is forbidden on index ${i}`);
       }
-      if (values[i].label == null) { //also undefined
+      if (values[i].label == null) { // eslint-disable-line no-eq-null, eqeqeq
         throw new Error(`value with label null is forbidden on index ${i}`);
       }
     }
@@ -53,28 +53,30 @@ export default function selectValueInjector(app) {
         $rootScope[name] = values;
         $rootScope[`${name}Filter`] = fvalues;
       }])
-      .filter(filterName, ['SelectGetLabel', function(SelectGetLabel) {
+      .filter(filterName, ['selectGetLabel', function(selectGetLabel) {
         return function(x) {
           // TODO empty string? Is that right? 5th param?
-          if (x == null) return '';
+          if (x == null) { // eslint-disable-line no-eq-null, eqeqeq
+            return '';
+          }
 
-          return SelectGetLabel(values, x);
+          return selectGetLabel(values, x);
         };
       }]);
 
     return this;
   };
 
-  app.factory('SelectGetLabel', function() {
-    return function source_get_label(values, id) {
+  app.factory('selectGetLabel', function() {
+    return function sourceGetLabel(values, id) {
       if (Array.isArray(id)) {
         return id.map(function(v) {
-          return source_get_label(values, v);
+          return sourceGetLabel(values, v);
         }).join(', ');
       }
 
-      if ('object' === typeof id) {
-        return source_get_label(values, id.key || id.id);
+      if (typeof id === 'object') {
+        return sourceGetLabel(values, id.key || id.id);
       }
 
       for (let i = 0; i < values.length; ++i) {

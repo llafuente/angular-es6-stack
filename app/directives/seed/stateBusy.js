@@ -12,14 +12,14 @@ export default 'stateBusy';
  * @module stateBusy
  * @description
  * # stateBusy
- * 
+ *
  * hook ui-router supporting loading screens, no extra code is required
  * just include!
  */
 angular.module('stateBusy', ['cgBusy', 'qUtils', 'ui.router'])
 // state change -> loading!
 .run(function($rootScope, chainLoadingQ, $log) {
-  var defer = null;
+  let defer = null;
 
   $rootScope.$on('$stateChangeStart', function(event, toState/*, toParams, fromState, fromParams*/) {
     $log.debug('(Loading) $stateChangeStart', toState.name);
@@ -35,8 +35,8 @@ angular.module('stateBusy', ['cgBusy', 'qUtils', 'ui.router'])
       defer = null;
     }
   });
-  $rootScope.$on('$stateChangeSuccess', function(event, toState/*, toParams, fromState, fromParams*/) {
-    $log.debug('(Loading) $stateChangeSuccess', toState.name);
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams/*, fromState, fromParams*/) {
+    $log.debug('(Loading) $stateChangeSuccess', toState.name, toParams);
     if (defer) {
       defer.resolve();
       defer = null;

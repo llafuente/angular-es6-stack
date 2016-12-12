@@ -65,15 +65,13 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-        /*
+          { loader: 'babel-loader' },
           {
             loader: "eslint-loader",
             options: {
               exclude: '/node_modules/'
             }
           },
-        */
-          { loader: 'babel-loader' },
         ]
       },
       // new ExtractTextPlugin('css/app.css', { allChunks: true })
