@@ -69,7 +69,9 @@ module.exports = {
           {
             loader: "eslint-loader",
             options: {
-              exclude: '/node_modules/'
+              exclude: '/node_modules/',
+              failOnWarning: false,
+              failOnError: false,
             }
           },
         ]
@@ -86,7 +88,7 @@ module.exports = {
           }
         ]
       },
-      
+
     ]
   },
   //devtool: "source-map",
