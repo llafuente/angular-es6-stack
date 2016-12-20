@@ -4,10 +4,12 @@ import './app.scss';
 
 import 'jquery';
 import angular from 'angular';
+import 'angular-smart-table';
 import 'angular-resource';
 import 'angular-ui-router';
 import 'angular-sanitize';
-//import _ from 'lodash';
+import 'checklist-model';
+import 'lodash';
 
 import 'services/services';
 import 'directives/directives';
@@ -20,6 +22,7 @@ import httpErrorHandling from 'directives/seed/httpErrorHandling';
 //import 'services/version-service';
 
 import mainRoutes from 'components/main/main.routes.config';
+import loginRoutes from 'components/login/routes.config';
 
 // Seed
 import BusyController from 'src/test/busy/busy.controller.js';
@@ -37,11 +40,13 @@ angular.module('app', [
   'services',
   'directives',
   'ngSanitize',
+  'smart-table',
+  'checklist-model',
   stateBusy,
   httpBusy,
   uiRouterRedirect,
   JWTAuth,
-  httpErrorHandling
+  httpErrorHandling,
   /*, 'version'*/
 ]);
 
@@ -49,6 +54,7 @@ selectValue(angular.module('app'));
 
 angular.module('app')
 .config(mainRoutes)
+.config(loginRoutes)
 
 // Seed
 .config(BusyRoutes)

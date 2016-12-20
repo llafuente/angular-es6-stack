@@ -14,11 +14,21 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
   let currentUser = {};
   let logginInProgess = null;
 
-  function _setCurrentUser(val) {
-    $log.debug('(Auth) _setCurrentUser');
+  function _setCurrentUser(user) {
+    user.roles.forEach(function(role) {
+      role.permissions.forEach(function(perm) {
+        if (user.permissions.indexOf(perm) === -1) {
+          user.permissions.push(perm);
+        }
+      });
+    });
 
-    $rootScope.user = val;
-    currentUser = val;
+    $log.debug('(Auth) _setCurrentUser', user);
+
+    $rootScope.user = user;
+    currentUser = user;
+
+    $rootScope.Auth.logged = user.hasOwnProperty('id');
   }
 
   function _logMeIn() {
@@ -38,6 +48,8 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
   // set token will set a cookie in current domain and parent domain
   // for no good reason :S
   function _setToken(data) {
+    $log.debug('set', JWTAuthConfig.cookie.name, data, JWTAuthConfig.cookie.domain);
+
     $cookies.put(JWTAuthConfig.cookie.name, data, {
       path: '/',
       secure: $location.protocol() === 'https',

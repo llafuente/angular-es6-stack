@@ -4,10 +4,23 @@
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>app</title>
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" />
       <link href="/styles.css" media="all" rel="stylesheet" />
     </head>
     <body>
         <div ng-app="app" cg-busy="loading">
+
+          <nav class="navbar navbar-light bg-faded">
+            <ul class="nav navbar-nav pull-right">
+              <li class="nav-item" ng-show="!Auth.logged" ui-sref-active="active">
+                <a class="nav-link" ui-sref="login">Login</a>
+              </li>
+              <li class="nav-item" ng-show="Auth.logged">
+                <a class="nav-link" ng-click="Auth.logout('login')">Logout</a>
+              </li>
+            </ul>
+          </nav>
+
            	<div ui-view></div>
         </div>
         <script src="/webpack-dev-server.js"></script>

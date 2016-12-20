@@ -30,7 +30,7 @@ export default function JWTAuthConfigProvider() {
     method: 'POST',
     url: '/api/users/me'
   };
-  this.apiAuthUrl = '/api/auth';
+  this.apiAuthUrl = '/api/users/auth';
   //this.stateAfterLogin = 'users';
   this.apiUsersLogout = {
     method: 'POST',
@@ -38,7 +38,7 @@ export default function JWTAuthConfigProvider() {
   };
   this.domainBlacklistHeader = [];
   this.token = {
-    header: 'X-Access-Token',
+    header: 'Authorization',
     format: 'Bearer %token%'
   };
   this.cookie = {

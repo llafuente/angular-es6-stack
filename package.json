@@ -6,7 +6,7 @@
     "url": "https://github.com/llafuente/webpack-angular-bootstrap-es6-seed.js.git"
   },
   "scripts": {
-    "server": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base dist/",
+    "server": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base app/",
     "webpack": "node_modules/webpack/bin/webpack.js --progress --colors --display-error-details",
     "doc": "mkdir -p docs/tutorials; node_modules/.bin/jsdoc --configure ./jsdoc.json"
   },
@@ -17,8 +17,10 @@
     "angular-modal-service": "^0.10.1",
     "angular-resource": "1.5.9",
     "angular-sanitize": "1.5.9",
+    "angular-smart-table": "^2.1.8",
     "angular-ui-router": "0.3.2",
     "bootstrap": "4.0.0-alpha.5",
+    "checklist-model": "^0.10.0",
     "jquery": "3.1.1",
     "lodash": "^4.17.2"
   },
