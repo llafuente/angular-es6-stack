@@ -22,7 +22,8 @@
     "bootstrap": "4.0.0-alpha.5",
     "checklist-model": "^0.10.0",
     "jquery": "3.1.1",
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "textangular": "^1.5.16"
   },
   "devDependencies": {
     "angular-jsdoc": "^1.5.0",
@@ -71,6 +72,7 @@
     "phantomjs": "2.1.7",
     "sass-loader": "4.0.2",
     "style-loader": "0.13.1",
+    "uglify-loader": "^1.4.0",
     "webpack": "2.1.0-beta.27",
     "webpack-dev-server": "2.1.0-beta.12"
   }

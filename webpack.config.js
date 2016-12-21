@@ -9,6 +9,7 @@ module.exports = {
   entry: './app/app.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    sourceMapFilename: '[file].source.map',
     filename: 'bundle.js',
     publicPath: '/'
   },
@@ -65,6 +66,15 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
+        /*
+          {
+            loader: 'uglify-loader',
+            options: {
+              mangle: false,
+              sourceMap: true
+            }
+          },
+        */
           { loader: 'babel-loader' },
           {
             loader: "eslint-loader",
@@ -91,8 +101,7 @@ module.exports = {
 
     ]
   },
-  //devtool: "source-map",
-  devtool: "inline-source-map",
+  devtool: "source-map",
   plugins: [
     new ExtractTextPlugin("styles.css")
   ],

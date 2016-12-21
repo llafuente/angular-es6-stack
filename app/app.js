@@ -10,6 +10,15 @@ import 'angular-ui-router';
 import 'angular-sanitize';
 import 'checklist-model';
 import 'lodash';
+// textAngular is a bit broken
+// taTools is expected to be global!
+// use this workaround
+window.taTools = window.taTools || {};
+import 'rangy/lib/rangy-selectionsaverestore';
+import 'textangular/dist/textAngular-sanitize.js';
+import 'textangular/dist/textAngularSetup.js';
+import 'textangular/dist/textAngular.js';
+
 
 import 'services/services';
 import 'directives/directives';
@@ -42,6 +51,7 @@ angular.module('app', [
   'ngSanitize',
   'smart-table',
   'checklist-model',
+  'textAngular',
   stateBusy,
   httpBusy,
   uiRouterRedirect,

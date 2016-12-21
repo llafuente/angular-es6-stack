@@ -15,13 +15,15 @@ export default function Auth($location, $rootScope, $http, $cookies, $state, $lo
   let logginInProgess = null;
 
   function _setCurrentUser(user) {
-    user.roles.forEach(function(role) {
-      role.permissions.forEach(function(perm) {
-        if (user.permissions.indexOf(perm) === -1) {
-          user.permissions.push(perm);
-        }
+    if (user.roles) {
+      user.roles.forEach(function(role) {
+        role.permissions.forEach(function(perm) {
+          if (user.permissions.indexOf(perm) === -1) {
+            user.permissions.push(perm);
+          }
+        });
       });
-    });
+    }
 
     $log.debug('(Auth) _setCurrentUser', user);
 
