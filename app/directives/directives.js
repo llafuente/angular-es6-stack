@@ -1,5 +1,5 @@
 import angular from 'angular';
-import ngClickIf from 'directives/seed/ngClickIf';
+import ngClickIf from 'seed/ngClickIf';
 
 angular
 .module('directives', [])

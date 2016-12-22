@@ -25,12 +25,12 @@ import 'textangular/dist/textAngular.js';
 
 import 'services/services';
 import 'directives/directives';
-import stateBusy from 'directives/seed/stateBusy';
-import httpBusy from 'directives/seed/httpBusy';
-import selectValue from 'directives/seed/selectValue';
-import uiRouterRedirect from 'directives/seed/uiRouterRedirect';
-import JWTAuth from 'directives/seed/JWTAuth';
-import httpErrorHandling from 'directives/seed/httpErrorHandling';
+import stateBusy from 'seed/stateBusy';
+import httpBusy from 'seed/httpBusy';
+import selectValue from 'seed/selectValue';
+import uiRouterRedirect from 'seed/uiRouterRedirect';
+import JWTAuth from 'seed/JWTAuth';
+import httpErrorHandling from 'seed/httpErrorHandling';
 //import 'services/version-service';
 
 import mainRoutes from 'components/main/main.routes.config';
