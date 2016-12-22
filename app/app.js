@@ -14,7 +14,10 @@ import 'lodash';
 // taTools is expected to be global!
 // use this workaround
 window.taTools = window.taTools || {};
-import 'rangy/lib/rangy-selectionsaverestore';
+import rangy from 'rangy';
+window.rangy = rangy;
+import selectionsaverestore from 'rangy/lib/rangy-selectionsaverestore.js';
+window.rangy.saveSelection = selectionsaverestore;
 import 'textangular/dist/textAngular-sanitize.js';
 import 'textangular/dist/textAngularSetup.js';
 import 'textangular/dist/textAngular.js';
@@ -63,6 +66,15 @@ angular.module('app', [
 selectValue(angular.module('app'));
 
 angular.module('app')
+.run(['$templateCache', function ($templateCache) {
+  // override smart table template, because we are using bootstrap v4
+  $templateCache.put('template/smart-table/pagination.html',
+      '<nav ng-if="numPages && pages.length >= 2"><ul class="pagination">' +
+      '<li ng-repeat="page in pages" class="page-item" ng-class="{active: page==currentPage}">' +
+      '<a href="javascript: void(0);" ng-click="selectPage(page)" class="page-link">{{page}}</a>' +
+      '</li>' +
+      '</ul></nav>');
+}])
 .config(mainRoutes)
 .config(loginRoutes)
 
