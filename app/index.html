@@ -12,10 +12,10 @@
 
           <nav class="navbar navbar-light bg-faded">
             <ul class="nav navbar-nav pull-right">
-              <li class="nav-item" ng-show="!Auth.logged" ui-sref-active="active">
+              <li class="nav-item ng-hide" ng-show="!Auth.logged" ui-sref-active="active">
                 <a class="nav-link" ui-sref="login">Login</a>
               </li>
-              <li class="nav-item" ng-show="Auth.logged">
+              <li class="nav-item ng-hide" ng-show="Auth.logged">
                 <a class="nav-link" ng-click="Auth.logout('login')">Logout</a>
               </li>
             </ul>
