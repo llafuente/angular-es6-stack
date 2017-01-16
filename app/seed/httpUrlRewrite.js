@@ -8,8 +8,10 @@ export default 'httpUrlRewrite';
  * @description
  * # httpUrlRewrite
  *
- * hook ui-router supporting loading screens, no extra code is required
- * just include!
+ * Rewrite all HTTP request base on some rules at
+ * [httpUrlRewriteProvider]{@link module:httpUrlRewrite.httpUrlRewriteProvider} 
+ * * Rewrite urls that start with
+ * * Add custom header
  */
 angular
 .module('httpUrlRewrite', [])

@@ -6,7 +6,9 @@
  * @description
  * # httpUrlRewriteInterceptor
  *
- * Interceptor that use httpUrlRewrite (provider) to rewrite requests config
+ * Interceptor that use
+ * [httpUrlRewriteProvider]{@link module:httpUrlRewrite.httpUrlRewriteProvider} 
+ * to rewrite requests config
  */
 export default function httpUrlRewriteInterceptor(httpUrlRewrite) {
   return {

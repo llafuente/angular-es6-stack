@@ -11,7 +11,7 @@ import AuthFactory from './JWTAuth.factory.js';
  *
  * @description
  * Module to handle user/session.
- * It's exposed to $rootScope.Auth for easy to use.
+ * It's exposed to `$rootScope.Auth` for easy to use.
  */
 /**
  * @ngdoc event

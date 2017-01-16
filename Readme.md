@@ -27,33 +27,31 @@ gulp karma
 ```
 
 
-Done
+# What it does
 
-* process images in css, sass & htmls
-* save css in other file
-* bable al js
-* eslint js
-* css/js source map
-* bootstrap v4
-* karma test (ci/dev)
-* karma coverage using: babel-plugin-istanbul
-* source-map working (at least on chrome)
-* API proxy
-* jsdoc
+* Bundle angular templates (using ngtemplate-loader)
+* Allow you to write ES6 code (using babel)
+* handle injector using `/*ngInject*/` (using ng-annotate-loader)
+* Use bootstrap 4 (SASS is the CSS prepocessor)
+* CSS is saved to a separate files
+* karma for CI and development (use `gulp karma:ci` or `gulp karma`)
+* dev server with `/api/*` proxied to `http://localhost:9090`
+* jsDoc ready
+* images versioning
+
+On production
+* generate source-maps
+* minify CSS/JS
 
 
-TODO
+# TODO
 
 * jade
 * HMR (--inline --hot)
 * JSON API
-* inetsys-seed
 * protractor
-
 * use dgeni for documentation
   * package.json.scripts: "dgeni": "node_modules/.bin/dgeni ./docs/config/index.js"
   * package.json.devDependencies: "dgeni": "^0.4.2",
-
-asset inline
-    "resolve-url-loader": "^1.6.0",
-    "url-loader": "^0.5.7",
+* working example of ng-file-upload in ie9
+* karma coverage using: babel-plugin-istanbul
