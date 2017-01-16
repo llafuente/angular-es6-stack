@@ -1,4 +1,4 @@
-export default class RedirectController {
+export default /*@ngInject*/ class RedirectController {
   constructor($state, $stateParams, redirectTo, redirectBack) {
     this.$state = $state;
     this.$stateParams = $stateParams;

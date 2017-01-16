@@ -1,9 +1,9 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-let extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractCSS = new ExtractTextPlugin('stylesheets/[name].css');
 
-const isProduction = false;
+const isProduction = process.env.NODE_ENV == 'production';
 
 module.exports = {
   entry: './app/app.js',
@@ -36,13 +36,13 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: "style-loader",
+          fallbackLoader: 'style-loader',
           loader: [
             {
               loader: 'css-loader',
               query: {
                 root: path.resolve(__dirname, 'app'),
-                sourceMap: !isProduction,
+                sourceMap: isProduction,
                 includePaths: [
                   path.resolve(__dirname, 'app'),
                   path.resolve(__dirname, 'node_modules')
@@ -53,7 +53,7 @@ module.exports = {
               loader: 'sass-loader',
               query: {
                 root: path.resolve(__dirname, 'app'),
-                sourceMaps: !isProduction,
+                sourceMaps: isProduction,
                 includePaths: [
                   path.resolve(__dirname, 'app'),
                   path.resolve(__dirname, 'node_modules')
@@ -66,18 +66,11 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-        /*
-          {
-            loader: 'uglify-loader',
-            options: {
-              mangle: false,
-              sourceMap: true
-            }
-          },
-        */
+          /* isProduction ? uglify : none, see below  */
+          { loader: 'ng-annotate-loader' },
           { loader: 'babel-loader' },
           {
-            loader: "eslint-loader",
+            loader: 'eslint-loader',
             options: {
               exclude: '/node_modules/',
               failOnWarning: false,
@@ -91,7 +84,7 @@ module.exports = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
               name: './images/[name].[hash].[ext]'
             }
@@ -101,9 +94,9 @@ module.exports = {
 
     ]
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   plugins: [
-    new ExtractTextPlugin("styles.css")
+    new ExtractTextPlugin('styles.css')
   ],
 
   // enable API proxy
@@ -115,63 +108,14 @@ module.exports = {
       }
     }
   }
-
-  /*
-  plugins: [
-    new webpack.HtmlWebpackPlugin({
-        inject: "body",
-        template: "app/index.html",
-        filename: "index.html"
-     })
-  ]
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
-      }
-    ],
-      {
-        test: /\.js$/,
-        loader: 'ng-annotate?add=true!babel',
-        exclude: /node_modules/
-      },
-      {
-        test: /.html$/,
-        loader: 'ngtemplate?relativeTo=' + __dirname +'/app!html?root=' + __dirname + '/app'
-      },
-      {
-        test: /\.png$/,
-        loader: 'file-loader'
-      }
-    ]
-  },
-  plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({ minimize: true, output: { comments: false }}),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery'
-    })
-    new webpack.LoaderOptionsPlugin({
-      test: /\.scss$/,
-      options: {
-        sassLoader: {
-          includePaths: [path.resolve(__dirname, "./app")]
-        },
-      }
-    })
-
-
-  ],
-  resolve: {
-    root: path.resolve('app/'),
-    extensions: ['', '.js']
-  },
-  eslint: {
-    failOnError: true
-  },
-  devtool: '#source-map'
-  */
 };
+
+if (isProduction) {
+  module.exports.module.rules[2].use.unshift({
+    loader: 'uglify-loader',
+    options: {
+      mangle: true,
+      sourceMap: true
+    }
+  });
+}

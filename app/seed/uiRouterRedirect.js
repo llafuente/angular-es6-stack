@@ -1,9 +1,6 @@
 import angular from 'angular';
 import 'angular-ui-router';
 
-
-export default 'uiRouterRedirect';
-
 /**
  * @ngdoc module
  * @name uiRouterRedirect
@@ -33,7 +30,7 @@ export default 'uiRouterRedirect';
      }
    });
  */
-angular
+export default angular
 .module('uiRouterRedirect', ['JWTAuth', 'ui.router'])
 .run(function($rootScope, $state, $injector, $log, $timeout) {
   $rootScope.$on('$stateChangeSuccess', function(evt, to, params) {

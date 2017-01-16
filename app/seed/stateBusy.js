@@ -3,9 +3,6 @@ import './qUtils.js';
 import 'angular-ui-router';
 import 'angular-busy/dist/angular-busy.js';
 
-// export the name to be imported
-export default 'stateBusy';
-
 /**
  * @ngdoc module
  * @name stateBusy
@@ -16,7 +13,8 @@ export default 'stateBusy';
  * hook ui-router supporting loading screens, no extra code is required
  * just include!
  */
-angular.module('stateBusy', ['cgBusy', 'qUtils', 'ui.router'])
+export default angular
+.module('stateBusy', ['cgBusy', 'qUtils', 'ui.router'])
 // state change -> loading!
 .run(function($rootScope, chainLoadingQ, $log) {
   let defer = null;

@@ -1,4 +1,4 @@
-export default class BusyController {
+export default /*@ngInject*/ class BusyController {
   constructor($http) {
     this.$http = $http;
   }

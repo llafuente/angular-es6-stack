@@ -1,12 +1,13 @@
-import httpUrlRewrite from './httpUrlRewrite.provider.js'
-import httpUrlRewriteInterceptor from './httpUrlRewrite.interceptor.js'
+import angular from 'angular';
+import httpUrlRewrite from './httpUrlRewrite.provider.js';
+import httpUrlRewriteInterceptor from './httpUrlRewrite.interceptor.js';
 export default 'httpUrlRewrite';
 /**
  * @ngdoc module
  * @module httpUrlRewrite
  * @description
  * # httpUrlRewrite
- * 
+ *
  * hook ui-router supporting loading screens, no extra code is required
  * just include!
  */

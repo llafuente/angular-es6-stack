@@ -4,7 +4,6 @@ import JWTAuthConfigProvider from './JWTAuthConfig.provider.js';
 import JWTAuthInterceptor from './JWTAuth.interceptor.js';
 import AuthFactory from './JWTAuth.factory.js';
 
-export default 'JWTAuth';
 /**
  * @ngdoc module
  * @name JWTAuth
@@ -34,7 +33,7 @@ export default 'JWTAuth';
  * # JWTAuth#$logout
  * Broadcasted when user is logged out (manually or automatically)
  */
-angular
+export default angular
 .module('JWTAuth', ['ui.router', 'ngCookies'])
 .provider('JWTAuthConfig', JWTAuthConfigProvider)
 .factory('Auth', AuthFactory)

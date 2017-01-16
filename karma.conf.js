@@ -1,9 +1,9 @@
 // NOTE force environment
 process.env.NODE_ENV = 'test';
 
-var webpack = require('webpack');
-var path = require('path');
-var webpackConfig = require('./webpack.config.js');
+const webpack = require('webpack');
+const path = require('path');
+const webpackConfig = require('./webpack.config.js');
 webpackConfig.watch = true;
 
 module.exports = function(config) {

@@ -1,4 +1,4 @@
-export default class ErrorHandlingController {
+export default /*@ngInject*/ class ErrorHandlingController {
   constructor($http) {
     this.$http = $http;
   }

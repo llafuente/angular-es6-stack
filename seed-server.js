@@ -1,5 +1,5 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
 app.get('/api/seed/busy-delay', function(req, res) {
   setTimeout(function() {
@@ -19,4 +19,4 @@ app.get('/api/seed/error500', function(req, res) {
   }, 1000);
 });
 
-app.listen(9090, "localhost", function() {});
+app.listen(9090, 'localhost', function() {});

@@ -1,5 +1,5 @@
 
 module.exports = angular.module("version", [])
-.constant("versionNumber", {"version":"1.0LOCAL","gitHash":"c00819a"});
+.constant("versionNumber", {"version":"0.0.0LOCAL","gitHash":"4315ae0"});
 
 

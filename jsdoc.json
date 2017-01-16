@@ -6,7 +6,8 @@
     "encoding": "utf8",
     "destination": "./docs/",
     "recurse": true,
-    "tutorials": "./docs/tutorials"
+    "tutorials": "./docs/tutorials",
+    "readme": "./Readme.md"
   },
   "plugins": [
     "plugins/markdown",

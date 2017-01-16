@@ -8,6 +8,7 @@
   "scripts": {
     "server": "node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base app/",
     "webpack": "node_modules/webpack/bin/webpack.js --progress --colors --display-error-details",
+    "lint": "eslint app/ *.js --fix",
     "doc": "mkdir -p docs/tutorials; node_modules/.bin/jsdoc --configure ./jsdoc.json"
   },
   "dependencies": {
@@ -67,7 +68,6 @@
     "karma-webpack": "1.8.0",
     "minimist": "1.2.0",
     "ng-annotate-loader": "0.2.0",
-    "ng-annotate-webpack-plugin": "0.1.3",
     "ngtemplate-loader": "1.3.1",
     "node-sass": "3.13.0",
     "phantomjs": "2.1.7",

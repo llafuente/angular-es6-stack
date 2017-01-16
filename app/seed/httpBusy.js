@@ -3,9 +3,6 @@ import './qUtils.js';
 import 'angular-ui-router';
 import 'angular-busy/dist/angular-busy.js';
 
-// export the name to be imported
-export default 'httpBusy';
-
 /**
  * @ngdoc module
  * @name httpBusy
@@ -47,7 +44,8 @@ export default 'httpBusy';
  * Broadcasted when there is no request pending
  */
 
-angular.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
+export default angular
+.module('httpBusy', ['cgBusy', 'qUtils', 'ui.router'])
 .factory('httpBusyInterceptor', function($q, $rootScope, $log, chainLoadingQ) {
   let requests = 0;
   let defer = null;

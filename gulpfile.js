@@ -1,30 +1,30 @@
-var fs = require('fs');
+const fs = require('fs');
 
-var gulp = require("gulp");
-var gutil = require("gulp-util");
-var rename = require('gulp-rename');
-var git = require('gulp-git');
-var ngConstant = require('gulp-ng-constant');
-var rm = require('gulp-rimraf');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const rename = require('gulp-rename');
+const git = require('gulp-git');
+const ngConstant = require('gulp-ng-constant');
+const rm = require('gulp-rimraf');
 
-var KarmaServer = require('karma').Server;
-var webpack = require("webpack");
-var webpackConfig = require("./webpack.config.js");
-var minimist = require('minimist');
+const KarmaServer = require('karma').Server;
+const webpack = require('webpack');
+const webpackConfig = require('./webpack.config.js');
+const minimist = require('minimist');
 
-var knownOptions = {
+const knownOptions = {
   string: 'buildNumber',
   default: { buildNumber: 'LOCAL' }
 };
 
-var options = minimist(process.argv.slice(2), knownOptions);
+const options = minimist(process.argv.slice(2), knownOptions);
 
-var versionMajorMinor = fs.readFileSync(__dirname + '/VERSION');
-var gitHash = '';
+const versionMajorMinor = require(__dirname + '/package.json').version;
+let gitHash = '';
 
 // watch, continuous testing
 gulp.task('karma', function(done) {
-  var server = new KarmaServer({
+  const server = new KarmaServer({
     configFile: __dirname + '/karma.conf.js',
     singleRun: false
   }, done);
@@ -33,37 +33,37 @@ gulp.task('karma', function(done) {
 
 // single run, ci
 gulp.task('karma:ci', function(done) {
-  var server = new KarmaServer({
-      configFile: __dirname + '/karma.ci.conf.js',
-      singleRun: true
+  const server = new KarmaServer({
+    configFile: __dirname + '/karma.ci.conf.js',
+    singleRun: true
   }, done);
   server.start();
 });
 
-gulp.task("clean", function() {
+gulp.task('clean', function() {
   return gulp.src('dist/*').pipe(rm());
 });
 
-gulp.task("package", ["clean", "version"], function(done) {
+gulp.task('package', ['clean', 'version'], function(done) {
   webpack(webpackConfig, function(err, stats) {
     if (stats.compilation.errors.length) {
       throw new gutil.PluginError('webpack', stats.compilation.errors.toString());
     }
     if (stats.compilation.warnings.length) {
-      gutil.log('[WARNING]', stats.compilation.warnings.toString())
+      gutil.log('[WARNING]', stats.compilation.warnings.toString());
     }
     done();
   });
 });
 
-gulp.task("githash", function(done) {
+gulp.task('githash', function(done) {
   git.exec({args: 'rev-parse --short HEAD'}, function(err, stdout) {
     gitHash = stdout;
     done();
   });
 });
 
-gulp.task('version', ["githash"], function() {
+gulp.task('version', ['githash'], function() {
   return ngConstant({
     name: 'version',
     constants: {
@@ -82,4 +82,4 @@ gulp.task('version', ["githash"], function() {
   .pipe(gulp.dest('./app/services/'));
 });
 
-gulp.task("build", ["package"]);
+gulp.task('build', ['package']);

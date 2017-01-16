@@ -32,6 +32,7 @@ import selectValue from 'seed/selectValue';
 import uiRouterRedirect from 'seed/uiRouterRedirect';
 import JWTAuth from 'seed/JWTAuth';
 import httpErrorHandling from 'seed/httpErrorHandling';
+import uiRouterAuthenticate from 'seed/uiRouterAuthenticate';
 //import 'services/version-service';
 
 import mainRoutes from 'components/main/main.routes.config';
@@ -57,11 +58,12 @@ export const modules = [
   'checklist-model',
   'textAngular',
   'ngFileUpload',
-  stateBusy,
-  httpBusy,
-  uiRouterRedirect,
-  JWTAuth,
-  httpErrorHandling,
+  stateBusy.name,
+  httpBusy.name,
+  uiRouterRedirect.name,
+  JWTAuth.name,
+  httpErrorHandling.name,
+  uiRouterAuthenticate.name,
 ];
 
 function register(app) {
@@ -83,7 +85,7 @@ function register(app) {
   .config(mainRoutes)
   .config(loginRoutes)
 
-  // Seed
+  // Seed test project for e2e & teaching
   .config(BusyRoutes)
   .config(RedirectRoutes)
   .config(SelectValueRoutes)
@@ -101,4 +103,3 @@ function register(app) {
 }
 
 export {register};
-

@@ -5,7 +5,7 @@
  * @memberOf module:httpUrlRewrite
  * @description
  * # httpUrlRewriteProvider
- * 
+ *
  * The provider contains to keys:
  * * startWith (Object).
  *   key is string to test
@@ -21,7 +21,7 @@
      httpUrlRewriteProvider.startWith['/api/latest'] = '/api/v2';
 
    })
- */ 
+ */
 export default function httpUrlRewriteProvider() {
   // Rewrite urls that start with
   this.startWith = {};

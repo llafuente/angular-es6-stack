@@ -1,12 +1,10 @@
-export default 'httpErrorHandling';
-
 import angular from 'angular';
 import defaultErrorHTML from './templates/default.error.tpl.html';
 import htmlErrorHTML from './templates/html.error.tpl.html';
 import 'angular-modal-service';
 
 // $rootScope.modal_error, contains if there is a model active
-angular
+export default angular
 .module('httpErrorHandling', [
   'angularModalService'
 ])
